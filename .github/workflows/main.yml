@@ -1,0 +1,49 @@
+name: "EKS Deployment"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentails
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    - name: Terraform Init 
+      working-directory: cluster/
+      run: terraform init -reconfigure 
+
+    - name: Terraform Format
+      working-directory: cluster/
+      run: terraform fmt
+
+    - name: Terraform Plan
+      working-directory: cluster/
+      run: terraform plan 
+
+    - name: Terraform Apply
+      working-directory: cluster/  
+      run: terraform apply --auto-approve
