@@ -3,13 +3,13 @@ provider "aws" {
   region = var.aws_region
 }
 
-terraform {
-  backend "s3" {
-    bucket         = "self-host-eks-dev"
-    key            = "terraform.tfstate"
-    region         = "ap-south-1"
-  }
-}
+# terraform {
+   # backend "s3" {
+    # bucket         = "self-host-eks-dev"
+    # key            = "terraform.tfstate"
+    # region         = "ap-south-1"
+   # }
+# }
 
 # VPC
 resource "aws_vpc" "main" {
