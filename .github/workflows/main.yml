@@ -14,10 +14,6 @@ jobs:
     name: 'Terraform'
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        shell: bash
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -33,17 +29,13 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
     - name: Terraform Init 
-      working-directory: cluster/
       run: terraform init -reconfigure 
 
     - name: Terraform Format
-      working-directory: cluster/
       run: terraform fmt
 
     - name: Terraform Plan
-      working-directory: cluster/
       run: terraform plan 
 
     - name: Terraform Apply
-      working-directory: cluster/  
       run: terraform apply --auto-approve
